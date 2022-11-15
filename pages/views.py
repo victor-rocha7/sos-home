@@ -1,6 +1,15 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 
 
-def index(request):
-    return HttpResponse("<h1>Hello World!</h1>")
+def handler404(request, exception):
+    return render(request, '404.html')
+
+def home(request):
+    context = {}
+    return render(request, 'home.html', context)
+
+def about(request):
+    context = {}
+    return render(request, 'about.html', context)
