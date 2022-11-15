@@ -34,13 +34,13 @@
         <ul class="form-inline my-2 my-lg-0">
           {% if user.is_authenticated %}
             <ul class="nav-item">
-              <a class="nav-link" style="color: #c9bd1a; font-size: 15px; text-align: center;">Olá, {{ user.username }}!</a>
-              <a class="nav-link" href="{% url 'logout' %}" style="color: #c9bd1a; font-size: 15px; text-align: center;">SAIR</a>
+              <a class="nav-link" style="color: #c9bd1a; font-size: 15px; text-align: center;">Olá, {{ user.first_name }}!</a>
+              <a class="nav-link" href="{% url 'logout' %}" style="color: #c9bd1a; font-size: 15px; text-align: center;"><u>SAIR</u></a>
             </ul>
           {% else %}
             <ul class="nav-item">
-              <a class="nav-link" href="{% url 'login' %}" style="color: #c9bd1a; font-size: 15px; text-align: center;">LOGIN</a>
-              <a class="nav-link" href="{% url 'signup' %}" style="color: #c9bd1a; font-size: 15px; text-align: center;">CADASTRE-SE</a>
+              <a class="nav-link" href="{% url 'login' %}" style="color: #c9bd1a; font-size: 15px; text-align: center;"><u>LOGIN</u></a>
+              <a class="nav-link" href="{% url 'signup' %}" style="color: #c9bd1a; font-size: 15px; text-align: center;"><u>CADASTRE-SE</u></a>
             </ul>
           {% endif %}
           <ul class="nav-item">
@@ -63,9 +63,10 @@
     <style>
       footer {
         position: relative;
+        flex-direction: row;
         bottom: 0;
         right: 0;
-        left: 0;
+        left: 0;  
         text-align: center;
         padding: 5px;
         background-color: #0c052c;

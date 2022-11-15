@@ -5,8 +5,8 @@ from django.contrib.auth.forms import UserCreationForm
 
 
 def signup(request):
-    if request.method == 'CATEGORY':
-        form = UserCreationForm(request.CATEGORY)
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('home'))
