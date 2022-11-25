@@ -20,22 +20,28 @@
         <img src="https://i.imgur.com/CI8twJJ.jpg" width="190" class="mr-3 rounded"> 
       </div>
       <hr>
-      <a class="navbar-brand" href="{% url 'home' %}" style="color: #c9bd1a; font-size: 25px;">Home</a>
+      <a class="navbar-brand" href="{% url 'home' %}" style="padding:12px; background-color: #13093b ;color: #c9bd1a; font-size: 25px;">Home</a>
     
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'categories' %}" style="color: #c9bd1a; font-size: 25px;">Serviços</a>
+            <a class="nav-link" href="{% url 'categories' %}" style="padding:10px; background-color: #13093b ;color: #c9bd1a; font-size: 25px;">Serviços</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'about' %}" style="color: #c9bd1a; font-size: 25px;">Sobre</a>
+            <a class="nav-link" href="{% url 'about' %}" style="padding:10px; background-color: #13093b ;color: #c9bd1a; font-size: 25px;">Sobre</a>
           </li>
         </ul>
         <ul class="form-inline my-2 my-lg-0">
           {% if user.is_authenticated %}
+            <a class="nav-link" style="background-color: #13093b ; color: #c9bd1a; font-size: 15px; text-align: center;">Olá, {{ user.name }}!</a>
+          {% endif %}
+        </ul>
+        <ul class="form-inline my-2 my-lg-0">
+          {% if user.is_authenticated %}
             <ul class="nav-item">
-              <a class="nav-link" style="color: #c9bd1a; font-size: 15px; text-align: center;">Olá, {{ user.name }}!</a>
-              <a class="nav-link" href="{% url 'logout' %}" style="color: #c9bd1a; font-size: 15px; text-align: center;"><u>SAIR</u></a>
+              <a class="nav-link" href="#" style="background-color: #13093b ;color: #c9bd1a; font-size: 15px; text-align: center;"><u>Meu Perfil</u></a>
+              <a class="nav-link" href="#" style="background-color: #13093b ;color: #c9bd1a; font-size: 15px; text-align: center;"><u>Meus Serviços</u></a>
+              <a class="nav-link" href="{% url 'logout' %}" style="background-color: #13093b ;color: #c9bd1a; font-size: 15px; text-align: center;"><u>SAIR</u></a>
             </ul>
           {% else %}
             <ul class="nav-item">

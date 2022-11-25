@@ -68,13 +68,3 @@ class EmployeeSignUpForm(UserCreationForm):
         employee.save()
 
         return user
-
-class LoginForm(forms.Form):
-    class Meta:
-        model = User
-        fields = ('email', 'password')
-
-        widgets = {
-            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'O email cadastrado na sua conta'}),
-            'password': forms.PasswordInput(attrs={'class': 'form-control'})
-        }

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.views.generic import CreateView
@@ -22,10 +22,7 @@ class ClientSignUp(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('accounts/signup')
-    
-    def get_success_url(self):
-        return reverse_lazy('home')
+        return redirect('home')
 
 class EmployeeSignUp(CreateView):
     model = User
@@ -39,9 +36,6 @@ class EmployeeSignUp(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('accounts/signup')
-
-    def get_success_url(self):
-        return reverse_lazy('home')
+        return redirect('home')
 
 
