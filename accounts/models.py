@@ -1,13 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.urls import reverse
 from pages.models import Category
+from django.conf import settings
+
+
+
 
 
 class User(AbstractUser):
     is_client = models.BooleanField('É cliente', default=False)
     is_employee = models.BooleanField('É prestador', default=False)
-    
+
     name = models.CharField('Nome Completo', max_length=255)
     email = models.CharField('E-mail', max_length=255)
     cpf = models.CharField('CPF', max_length=14)

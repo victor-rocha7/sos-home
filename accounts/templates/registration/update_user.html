@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% block title %}
+<h1>Atualizar Dados do Usuário {{ user.name }}</h1>
+{% endblock title %}
+
+<form method="POST" action="{% url 'update-user' %}">
+    {% csrf_token %}
+    <p>
+        <label for="name">Nome:</label>
+        <input type="text" name="name" id="name" value="{{ user.name }}" />
+    </p>
+    <p>
+        <label for="adress">Endereço:</label>
+        <input type="text" name="adress" id="adress" value="{{ user.adress }}" />
+    </p>
+    <p>
+        <label for="imageURL">Foto de Perfil:</label>
+        <input type="text" name="imageURL" id="imageURL" value="{{ user.imageURL }}" />
+    </p>
+    <button type="submit">Atualizar</button>
+</form>
+
+{% endblock content %}
+
+

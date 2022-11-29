@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .container{
+    display:grid;
+    grid-template-areas: "bx1"
+    "bx2";}
+    li{
+    list-style-type: none;
+    }
+    #logo {
+    border-radius: 50%;
+    margin:0;
+    padding:0%
+    }
+</style>
+
+<div class="container" style="background-color: #2c2b2e38;">
+    <div class='row'>
+    <div class='p-20' ><img src={{employee.imageURL}} width='100'></div>
+    <div class='col'><h1>{{employee.name}}</h1></div>
+    </div>
+    <hr width=100% color='grey'>
+    <div class='row'>
+    <div class='col self-align-center'>                                                                                         
+        <ul style="list-style: none; margin: 5%">
+        {% for job in employee.job.all %}
+        <li><b>Profissão:</b> {{job}}</li>
+        {% endfor %}
+        <li><b>Endereço:</b> {{employee.adress}}</li>
+        {% for available in employee.available.all %}
+        <li><b>Disponibilidade:</b> {{available}}</li>
+        {% endfor %}
+        <li><b>Avaliação:</b> 8/10</li>
+        </ul>
+        
+    </div>
+    </div>
+</div>
+{% endblock %}
+     
