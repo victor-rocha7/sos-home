@@ -9,23 +9,28 @@ Atualizar Dados
 {% block content %}
 <h1>Atualizar Dados</h1>
 <hr><br>
+
+{%if user.is_authenticated%}
 <form method="POST" action="{% url 'update-user' %}">
     {% csrf_token %}
     <p>
         <label for="name">Nome:</label>
-        <input type="text" name="name" id="name" value="{{ user.name }}" />
+        <input type="text" name="name" id="name" class="form-control" value="{{ user.name }}" />
     </p>
     <p>
         <label for="imageURL">Foto de Perfil:</label>
-        <input type="text" name="imageURL" id="imageURL" value="{{ user.imageURL }}" />
+        <input type="url" name="imageURL" id="imageURL" class="form-control" value="{{ user.imageURL }}" />
     </p>
     <p>
         <label for="adress">Endereço:</label>
-        <input type="text" name="adress" id="adress" value="{{ user.adress }}" />
+        <input type="text" name="adress" id="adress" class="form-control" value="{{ user.adress }}" />
     </p>
     <button class="btn btn-secondary">Atualizar</button>
     <br><br>
 </form>
+{% else %}
+<center><h3>Faça login para poder alterar seus dados!</h3></center> <br>
+{% endif %}
 
 {% endblock content %}
 

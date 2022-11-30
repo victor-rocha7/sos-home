@@ -69,8 +69,7 @@ def DetailEmployee(request, user_id):
 class UserUpdate(UpdateView):
     model = User
     template_name = 'registration/update_user.html'
-    fields = ['name', 'adress', 'imageURL']
-    success_url = reverse_lazy('user-profile')
+    fields = ['name', 'imageURL', 'adress']
 
     def get_object(self, queryset=None):
         user = User.objects.filter(pk=self.request.user.id).first()
@@ -80,14 +79,15 @@ class UserUpdate(UpdateView):
         context = super().get_context_data(*args, **kwargs)
         context['titulo'] = 'Meus dados pessoais'
         context['botao'] = 'Atualizar'
-        
         return context
+    
+    def get_success_url(self):
+        return reverse('user-profile')
 
 class Profile(CreateView):
     model = User
     fields = '__all__'
     template_name = 'registration/user_profile.html'
-    success_url = reverse_lazy('home')
 
     def get_object(self, queryset=None):
         user = user.objects.filter(pk=self.request.user.id).first()

@@ -11,7 +11,7 @@ class User(AbstractUser):
     name = models.CharField('Nome Completo', max_length=255)
     email = models.CharField('E-mail', max_length=255)
     cpf = models.CharField('CPF', max_length=14)
-    birth_date = models.DateField('Data de Nascimento', auto_now_add=True)
+    birth_date = models.DateField('Data de Nascimento')
     gender = models.CharField('Sexo', max_length=30)
     adress = models.CharField('Endereço', max_length=255)
     imageURL = models.URLField('URL da Foto de Perfil', blank=True)
