@@ -23,3 +23,14 @@ class Categories(ListView):
 def CategoryDetail(request, cat_id):
     cat = get_object_or_404(Category, pk=cat_id)
     return render(request, 'category_details.html', {'cat':cat})
+
+def Search(request):
+    return render(request, 'search.html')
+
+def SearchCategory(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        cat = Category.objects.filter(name__contains=searched)
+        return render(request, 'search_category.html', {'searched':searched,'cat':cat}) 
+    else:
+        return render(request, 'search_category.html')
