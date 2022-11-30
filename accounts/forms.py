@@ -43,7 +43,7 @@ class EmployeeSignUpForm(UserCreationForm):
     gender = forms.CharField(label='Sexo', required=True, widget=forms.Select(choices=GENDER_CHOICES, attrs={'class': 'form-control'}))
     adress = forms.CharField(label='Endereço', required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
     imageURL = forms.URLField(label='URL da Foto de Perfil', required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    available = forms.CharField(label='Disponibilidade', required=False, widget=forms.SelectMultiple(choices=AVAILABLE_CHOICES, attrs={'class': 'form-control'}))
+    available = forms.CharField(label='Disponibilidade', required=False, widget=forms.CheckboxSelectMultiple(choices=AVAILABLE_CHOICES))
     job = forms.ModelMultipleChoiceField(label='Profissão/Especialidades', required=True, queryset=Category.objects.all(), widget=forms.CheckboxSelectMultiple)
     
     class Meta(UserCreationForm.Meta):

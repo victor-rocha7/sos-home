@@ -4,9 +4,6 @@ from pages.models import Category
 from django.conf import settings
 
 
-
-
-
 class User(AbstractUser):
     is_client = models.BooleanField('É cliente', default=False)
     is_employee = models.BooleanField('É prestador', default=False)

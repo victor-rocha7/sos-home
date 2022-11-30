@@ -44,11 +44,26 @@ class EmployeeSignUp(CreateView):
 def DetailEmployee(request, user_id):
     user = User.objects.get(id=user_id)
     employee = Employee.objects.get(user_id=user_id)
+    
+    #horários de disponilidade
+    available = employee.available
+    a = available.split("'")
+    disp = []
+    if len(a)==3:
+        disp.append(a[1])
+    elif len(a)==5:
+        disp.append(a[1])
+        disp.append(a[3])
+    elif len(a)==7:
+        disp.append(a[1])
+        disp.append(a[3])
+        disp.append(a[5])
+
     temp_user = user
-    if user.is_employee:
+    if user.is_employee:    
         temp_user.job = employee.job
         temp_user.available = employee.available
-        context = {'employee': temp_user}
+        context = {'employee': temp_user, 'disp':disp}
         return render(request, 'registration/detail_employee.html', context)
 
 class UserUpdate(UpdateView):
