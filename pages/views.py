@@ -22,7 +22,8 @@ class Categories(ListView):
 
 def CategoryDetail(request, cat_id):
     cat = get_object_or_404(Category, pk=cat_id)
-    return render(request, 'category_details.html', {'cat':cat})
+    context = {'cat':cat, }
+    return render(request, 'category_details.html', context)
 
 def Search(request):
     return render(request, 'search.html')
