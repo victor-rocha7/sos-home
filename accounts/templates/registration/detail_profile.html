@@ -36,7 +36,6 @@
         <li><b>Idade:</b> {{employee.age}}</li>
         <li><b>Email:</b> {{employee.email}}</li>
         <b>Profissão:</b>
-        
         {% for job in employee.job.all %}
             {{job}},
         {% endfor %}
@@ -52,6 +51,59 @@
     </div>
     </div>
 </div>
+
+<hr width=100% color='grey'>
+
+<section>
+    <header>
+        <h3>Avaliações</h3><br>
+
+    {% if not rating.all %}
+        <small>Ainda não existe nenhuma avaliação para este perfil.</small>
+        <br><br>
+        <a href="{% url 'rate-profile' employee.pk %}" class="btn btn-secondary">Avaliar </a><br><br>
+        <br><br>
+    {% else %}
+        {% for rate in rating.all %}
+            <h5>{{ rate.author.name }}<small>- {{ rate.date }}</small></h5> 
+            <b>Comentário:</b> "{{ rate.body }}"
+            <br><b>Nota:</b> 
+            {% if rate.rate == 1 %}
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" width="15">
+
+            {% elif rate.rate == 2 %}
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" width="15">
+            {% elif rate.rate == 3 %}
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" width="15">
+            {% elif rate.rate == 4 %}
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" width="15">
+            {% else %}
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
+            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
+            {% endif %}<br><hr>
+        {% endfor %}
+        <a href="{% url 'rate-profile' employee.pk %}" class="btn btn-secondary">Avaliar </a><br><br>
+    {% endif %}
+</section>
 
 {% else %}
 
@@ -77,6 +129,29 @@
     </div>
     </div>
 </div>
+
+<hr>
+
+<section>
+    <header>
+        <h4>Avaliações</h4>
+    </header>
+    <ul>
+        {% if client.rate_set.all %}
+            {% for rate in client.rate_set.all %}
+                <figure>
+                    <blockquote>
+                        "{{ rate.body }}"
+                    </blockquote>
+                    <figcaption>—{{ rate.author }}
+                </figure>
+            {% endfor %}
+        {% else %}
+            <p>Ainda não existe nenhuma avaliação para este perfil.</p>
+        {% endif %}
+    </ul>
+    <a href="{% url 'rate-profile' client.pk %}" class="btn btn-secondary">Avaliar </a><br><br>
+</section>
 
 {% endif %}
 

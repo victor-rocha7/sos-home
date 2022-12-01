@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.views.generic import CreateView, UpdateView
-from .forms import ClientSignUpForm, EmployeeSignUpForm
-from .models import User, Employee
+from .forms import ClientSignUpForm, EmployeeSignUpForm, RatingForm
+from .models import User, Client, Employee, Rating
 from datetime import date
+from django.template.loader import get_template
 
 def signup(request):
     return render(request, 'registration/signup_choice.html')
@@ -43,6 +44,7 @@ class EmployeeSignUp(CreateView):
 @login_required
 def DetailProfile(request, user_id):
     user = User.objects.get(id=user_id)
+    rating = Rating.objects.all().filter(profile_id=user_id) 
     age = date.today().year - user.birth_date.year
     temp_user = user
     if temp_user.is_employee:
@@ -65,11 +67,11 @@ def DetailProfile(request, user_id):
         temp_user.age = age
         temp_user.job = employee.job
         temp_user.available = employee.available
-        context = {'employee': temp_user, 'disp':disp}
+        context = {'employee': temp_user, 'disp':disp, 'rating':rating}
         return render(request, 'registration/detail_profile.html', context)
     else:
         temp_user.age = age
-        context = {'client': temp_user}
+        context = {'client': temp_user, 'rating':rating}
         return render(request, 'registration/detail_profile.html', context)
 
 class UserUpdate(UpdateView):
@@ -122,4 +124,33 @@ def Profile(request):
         context = {'user': temp_user}
         return render(request, 'registration/user_profile.html', context)
     
+class AddRate(CreateView):
+    model = Rating
+    form_class = RatingForm
+    template_name = 'rate.html'
 
+    def form_valid(self, form):
+        form.instance.post_id = self.kwargs['pk']
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse_lazy('detail', kwargs={'pk': self.kwargs['pk']})
+
+def Rate(request, user_id):
+    user = request.user
+    profile = User.objects.get(pk=user_id) 
+
+    if request.method == 'POST': 
+        form = RatingForm(request.POST)
+        if form.is_valid():
+            rate = form.save(commit=False)
+            rate.user = user
+            rate.profile = profile
+            rate.save()
+            return HttpResponseRedirect(reverse('detail', args = [user_id]))
+    else:
+        form = RatingForm()
+
+    context = {'form':form, 'profile':profile}
+
+    return render(request, 'rate.html', context)

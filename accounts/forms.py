@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Client, Employee
+from .models import User, Client, Employee, Rating
 from pages.models import Category
 from django.db import transaction
 
@@ -68,3 +68,14 @@ class EmployeeSignUpForm(UserCreationForm):
         employee.save()
 
         return user
+
+
+RATE_CHOICES = [(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')]
+
+class RatingForm(forms.ModelForm):
+    body = forms.CharField(label='Comentário', required=False, widget=forms.Textarea(attrs={'class': 'form-control'}))
+    rate = forms.ChoiceField(label='Nota', required=True, choices = RATE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = Rating
+        fields = ('body', 'rate')
