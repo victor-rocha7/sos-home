@@ -59,7 +59,10 @@
     <br>
     <div class='row'>
     <div class='p-20' ><img src={{user.imageURL}} width='180'></div>
-    <div class='col'><h1>{{user.name}}</h1></div>
+    <div class='col'>
+        <h1>{{user.name}}</h1>
+        <small><strong>Visto por último em: </strong>{{user.last_login}}</small>
+    </div>
     </div>
     <hr width=100% color='grey'>
     <div class='row'>
