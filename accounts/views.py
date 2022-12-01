@@ -123,18 +123,6 @@ def Profile(request):
         temp_user.age = age
         context = {'user': temp_user}
         return render(request, 'registration/user_profile.html', context)
-    
-class AddRate(CreateView):
-    model = Rating
-    form_class = RatingForm
-    template_name = 'rate.html'
-
-    def form_valid(self, form):
-        form.instance.post_id = self.kwargs['pk']
-        return super().form_valid(form)
-    
-    def get_success_url(self):
-        return reverse_lazy('detail', kwargs={'pk': self.kwargs['pk']})
 
 def Rate(request, user_id):
     user = request.user

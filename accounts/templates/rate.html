@@ -10,7 +10,7 @@
 <form action="{% url 'rate-profile' profile.pk %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Enviar Avaliação</button>
+    <button type="submit" class="btn btn-secondary">Enviar Avaliação</button>
 </form>
 
 <br>
