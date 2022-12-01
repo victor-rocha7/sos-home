@@ -9,26 +9,20 @@
 <img src="{{ cat.image }}" width="300px"> <br><br>
 
 <h5>Descrição</h5>{{ cat.description }}
-<br><br><br>
+<br><hr>
 
-<h5>Parceiros</h5>
+<h5>Nossos Parceiros</h5>
 
-<br>
-
-<!--<ul> 
-    {% for post in cat.post_set.all %}
-        <li> <a href="{% url 'post-detail' post.pk %}"><strong>{{ post.title }}</strong> </a> - 
-            <small>{{ post.author.first_name}} {{post.author.last_name }}</small> <br>
-            <small>{{ post.datetime }}</small></li> 
+{% if users %}
+    <ul>
+    {% for user in users %}
+    <li> <a href="{% url 'detail' user.pk %}"><strong>{{ user }}</strong> </a> 
     {% endfor %}
-</ul>-->
-<ul> 
-    {% for post in cat.post_set.all %}
-        <li> <a href="{% url 'post-detail' post.pk %}"><strong>{{ post.title }}</strong> </a> - 
-            <small>{{ post.author.first_name}} {{post.author.last_name }}</small> <br>
-            <small>{{ post.datetime }}</small></li> 
-    {% endfor %}
-</ul>
+    </ul>
+
+{% else %}
+    <small>Desculpa, ainda não existem prestadores de serviço nessa categoria...</small><br>
+{% endif %}
 
 <br>
 <a href="{% url 'categories' %}" class="btn btn-secondary">Voltar </a>

@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Category
+from accounts.models import User, Employee
 from django.urls import reverse_lazy
 
 
@@ -22,7 +23,8 @@ class Categories(ListView):
 
 def CategoryDetail(request, cat_id):
     cat = get_object_or_404(Category, pk=cat_id)
-    context = {'cat':cat, }
+    employees = Employee.objects.filter(job=cat_id)
+    context = {'cat':cat, 'users':employees}
     return render(request, 'category_details.html', context)
 
 def Search(request):
