@@ -41,30 +41,33 @@ class EmployeeSignUp(CreateView):
         return redirect('home')
 
 @login_required
-def DetailEmployee(request, user_id):
+def DetailProfile(request, user_id):
     user = User.objects.get(id=user_id)
-    employee = Employee.objects.get(user_id=user_id)
-    
-    #horários de disponilidade
-    available = employee.available
-    a = available.split("'")
-    disp = []
-    if len(a)==3:
-        disp.append(a[1])
-    elif len(a)==5:
-        disp.append(a[1])
-        disp.append(a[3])
-    elif len(a)==7:
-        disp.append(a[1])
-        disp.append(a[3])
-        disp.append(a[5])
-
     temp_user = user
-    if user.is_employee:    
+    if user.is_employee:
+        employee = Employee.objects.get(user_id=user_id)
+
+        #horários de disponilidade
+        available = employee.available
+        a = available.split("'")
+        disp = []
+        if len(a)==3:
+            disp.append(a[1])
+        elif len(a)==5:
+            disp.append(a[1])
+            disp.append(a[3])
+        elif len(a)==7:
+            disp.append(a[1])
+            disp.append(a[3])
+            disp.append(a[5])
+               
         temp_user.job = employee.job
         temp_user.available = employee.available
         context = {'employee': temp_user, 'disp':disp}
-        return render(request, 'registration/detail_employee.html', context)
+        return render(request, 'registration/detail_profile.html', context)
+    else:
+        context = {'user': temp_user}
+        return render(request, 'registration/detail_profile.html', context)
 
 class UserUpdate(UpdateView):
     model = User
@@ -90,6 +93,6 @@ class Profile(CreateView):
     template_name = 'registration/user_profile.html'
 
     def get_object(self, queryset=None):
-        user = user.objects.filter(pk=self.request.user.id).first()
+        user = User.objects.filter(pk=self.request.user.id).first()
         return user
 

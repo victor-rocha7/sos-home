@@ -17,6 +17,9 @@
 </style>
 <br>
 <h4>Você está visitando o perfil de:</h4>
+
+{% if user.is_employee %}
+
 <div class="container" style="background-color: #2c2b2e38;">
     <br>
     <div class='row'>
@@ -27,6 +30,7 @@
     <div class='row'>
     <div class='col self-align-center'>                                                                                         
         <ul style="list-style: none; margin: 2%">
+        <li><b>Email:</b> {{employee.email}}</li>
         <b>Profissão:</b>
         
         {% for job in employee.job.all %}
@@ -44,5 +48,29 @@
     </div>
     </div>
 </div>
+
+{% else %}
+
+<div class="container" style="background-color: #2c2b2e38;">
+    <br>
+    <div class='row'>
+    <div class='p-20' ><img src={{user.imageURL}} width='180'></div>
+    <div class='col'><h1>{{user.name}}</h1></div>
+    </div>
+    <hr width=100% color='grey'>
+    <div class='row'>
+    <div class='col self-align-center'>                                                                                         
+        <ul style="list-style: none; margin: 2%">
+        <li><b>Email:</b> {{user.email}}</li>
+        <li><b>Endereço:</b> {{user.adress}}</li>
+        <li><b>Avaliação:</b> 8/10</li>
+        </ul>
+        
+    </div>
+    </div>
+</div>
+
+{% endif %}
+
 {% endblock %}
      
