@@ -39,7 +39,7 @@ RATE_CHOICES = [(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5')]
 
 class Rating(models.Model):
     # perfil do avaliador (author)
-    author = models.ForeignKey(User, related_name='autor', on_delete=models.CASCADE)
+    author = models.ForeignKey(User, related_name='author', on_delete=models.CASCADE)
 
     date = models.DateTimeField(auto_now_add=True)
     body = models.CharField(max_length=255)
@@ -47,7 +47,7 @@ class Rating(models.Model):
     likes = models.PositiveSmallIntegerField(default=0)
 
     # pegando o perfil do avaliado (client/employee)
-    profile = models.ForeignKey(User, related_name='avaliado', on_delete=models.CASCADE)
+    profile = models.ForeignKey(User, related_name='profile', on_delete=models.CASCADE)
 
     def __str__(self):
         return '%s - %s' %(self.author.name, self.rate)

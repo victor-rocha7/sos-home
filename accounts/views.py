@@ -132,7 +132,7 @@ def Rate(request, user_id):
         form = RatingForm(request.POST)
         if form.is_valid():
             rate = form.save(commit=False)
-            rate.user = user
+            rate.author = user
             rate.profile = profile
             rate.save()
             return HttpResponseRedirect(reverse('detail', args = [user_id]))
