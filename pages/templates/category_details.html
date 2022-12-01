@@ -14,6 +14,7 @@
 <h5>Nossos Parceiros</h5>
 
 {% if users %}
+
     <ul>
     {% for user in users %}
     <li> <a href="{% url 'detail' user.pk %}"><strong>{{ user }}</strong> </a> 

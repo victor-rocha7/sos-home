@@ -45,7 +45,7 @@ def DetailProfile(request, user_id):
     user = User.objects.get(id=user_id)
     age = date.today().year - user.birth_date.year
     temp_user = user
-    if user.is_employee:
+    if temp_user.is_employee:
         employee = Employee.objects.get(user_id=user_id)
 
         #horários de disponilidade
@@ -69,7 +69,7 @@ def DetailProfile(request, user_id):
         return render(request, 'registration/detail_profile.html', context)
     else:
         temp_user.age = age
-        context = {'user': temp_user}
+        context = {'client': temp_user}
         return render(request, 'registration/detail_profile.html', context)
 
 class UserUpdate(UpdateView):
