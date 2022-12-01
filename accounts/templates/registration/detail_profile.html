@@ -24,12 +24,16 @@
     <br>
     <div class='row'>
     <div class='p-20' ><img src={{employee.imageURL}} width='180'></div>
-    <div class='col'><h1>{{employee.name}}</h1></div>
+    <div class='col'>
+        <h1>{{employee.name}}</h1>
+        <small><strong>Visto por último em: </strong>{{employee.last_login}}</small>
+    </div>
     </div>
     <hr width=100% color='grey'>
     <div class='row'>
     <div class='col self-align-center'>                                                                                         
         <ul style="list-style: none; margin: 2%">
+        <li><b>Idade:</b> {{employee.age}}</li>
         <li><b>Email:</b> {{employee.email}}</li>
         <b>Profissão:</b>
         
@@ -61,6 +65,7 @@
     <div class='row'>
     <div class='col self-align-center'>                                                                                         
         <ul style="list-style: none; margin: 2%">
+        <li><b>Idade:</b> {{user.age}}</li>
         <li><b>Email:</b> {{user.email}}</li>
         <li><b>Endereço:</b> {{user.adress}}</li>
         <li><b>Avaliação:</b> 8/10</li>

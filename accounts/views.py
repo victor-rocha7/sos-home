@@ -8,6 +8,7 @@ from django.views.generic import CreateView, UpdateView
 from .forms import ClientSignUpForm, EmployeeSignUpForm
 from .models import User, Employee, Client
 from django.contrib import messages
+from datetime import date
 
 def signup(request):
     return render(request, 'registration/signup_choice.html')
@@ -43,6 +44,7 @@ class EmployeeSignUp(CreateView):
 @login_required
 def DetailProfile(request, user_id):
     user = User.objects.get(id=user_id)
+    age = date.today().year - user.birth_date.year
     temp_user = user
     if user.is_employee:
         employee = Employee.objects.get(user_id=user_id)
@@ -61,11 +63,13 @@ def DetailProfile(request, user_id):
             disp.append(a[3])
             disp.append(a[5])
                
+        temp_user.age = age
         temp_user.job = employee.job
         temp_user.available = employee.available
         context = {'employee': temp_user, 'disp':disp}
         return render(request, 'registration/detail_profile.html', context)
     else:
+        temp_user.age = age
         context = {'user': temp_user}
         return render(request, 'registration/detail_profile.html', context)
 
