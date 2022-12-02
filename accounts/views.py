@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
-from django.views.generic import CreateView, UpdateView
-from .forms import ClientSignUpForm, EmployeeSignUpForm
-from .models import User, Employee
+from django.views.generic import CreateView, UpdateView, DeleteView
+from .forms import ClientSignUpForm, EmployeeSignUpForm, RatingForm, UpdateRateForm, UpdateEmployeeProfileForm, UpdateProfileForm
+from .models import User, Client, Employee, Rating
 from datetime import date
+from django.template.loader import get_template
 
 def signup(request):
     return render(request, 'registration/signup_choice.html')
@@ -43,6 +44,17 @@ class EmployeeSignUp(CreateView):
 @login_required
 def DetailProfile(request, user_id):
     user = User.objects.get(id=user_id)
+    rating = Rating.objects.all().filter(profile_id=user_id) 
+
+    # calcula a nota media 
+    rates = []
+    for rate in rating:
+        rates.append(rate.rate)
+    if len(rates)>0:
+        avg_rate = sum(rates)/len(rates)
+    else:
+        avg_rate=5
+
     age = date.today().year - user.birth_date.year
     temp_user = user
     if temp_user.is_employee:
@@ -65,33 +77,50 @@ def DetailProfile(request, user_id):
         temp_user.age = age
         temp_user.job = employee.job
         temp_user.available = employee.available
-        context = {'employee': temp_user, 'disp':disp}
+        context = {'employee': temp_user, 'disp':disp, 'rating':rating, 'avg_rate':avg_rate}
         return render(request, 'registration/detail_profile.html', context)
     else:
         temp_user.age = age
-        context = {'client': temp_user}
+        context = {'client': temp_user, 'rating':rating, 'avg_rate':avg_rate}
         return render(request, 'registration/detail_profile.html', context)
+
+class EmployeeUpdate(UpdateView):
+    model = Employee
+    form_class = UpdateEmployeeProfileForm
+    template_name = 'registration/update_employee.html'
+
+    def get_object(self, queryset=None):
+        user = Employee.objects.filter(pk=self.request.user.id).first()
+        return user
+
+    def get_success_url(self):
+        return reverse('user-profile')
 
 class UserUpdate(UpdateView):
     model = User
+    form_class = UpdateProfileForm
     template_name = 'registration/update_user.html'
-    fields = ['name', 'imageURL', 'adress']
 
     def get_object(self, queryset=None):
         user = User.objects.filter(pk=self.request.user.id).first()
         return user
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['titulo'] = 'Meus dados pessoais'
-        context['botao'] = 'Atualizar'
-        return context
     
     def get_success_url(self):
-        return reverse_lazy('user-profile')
+        return reverse('user-profile')
 
 def Profile(request):
     user = request.user
+    rating = Rating.objects.all().filter(profile_id=user.id) 
+
+    # calcula a nota media 
+    rates = []
+    for rate in rating:
+        rates.append(rate.rate)
+    if len(rates)>0:
+        avg_rate = sum(rates)/len(rates)
+    else:
+        avg_rate=5
+
     age = date.today().year - user.birth_date.year
     temp_user = user
     if user.is_employee:
@@ -114,12 +143,45 @@ def Profile(request):
         temp_user.age = age
         temp_user.job = employee.job
         temp_user.available = employee.available
-        context = {'user': temp_user, 'disp':disp}
+        context = {'user': temp_user, 'disp':disp, 'rating':rating, 'avg_rate':avg_rate}
         return render(request, 'registration/user_profile.html', context)
         
     else:
         temp_user.age = age
-        context = {'user': temp_user}
+        context = {'user': temp_user, 'rating':rating, 'avg_rate':avg_rate}
         return render(request, 'registration/user_profile.html', context)
-    
 
+def Rate(request, user_id):
+    user = request.user
+    profile = User.objects.get(pk=user_id) 
+
+    if request.method == 'POST': 
+        form = RatingForm(request.POST)
+        if form.is_valid():
+            rate = form.save(commit=False)
+            rate.author = user
+            rate.profile = profile
+            rate.save()
+            return HttpResponseRedirect(reverse('detail', args = [user_id]))
+    else:
+        form = RatingForm()
+
+    context = {'form':form, 'profile':profile}
+
+    return render(request, 'rate.html', context)
+
+class UpdateRate(UpdateView):
+    model = Rating
+    form_class = UpdateRateForm
+    template_name = 'update_rate.html'
+
+    def get_success_url(self):
+        return reverse('detail', kwargs={'user_id': self.object.profile_id})
+
+     
+class DeleteRate(DeleteView):
+    model = Rating
+    template_name = 'delete_rate.html'
+
+    def get_success_url(self):
+        return reverse('detail', kwargs={'user_id': self.object.profile_id})
