@@ -165,7 +165,6 @@ class UpdateRate(UpdateView):
     model = Rating
     form_class = UpdateRateForm
     template_name = 'update_rate.html'
-    context_object_name = 'profile_list'
 
     def get_success_url(self):
         return reverse('detail', kwargs={'user_id': self.object.profile_id})
@@ -174,4 +173,6 @@ class UpdateRate(UpdateView):
 class DeleteRate(DeleteView):
     model = Rating
     template_name = 'delete_rate.html'
-    success_url = reverse_lazy('home')
+
+    def get_success_url(self):
+        return reverse('detail', kwargs={'user_id': self.object.profile_id})
