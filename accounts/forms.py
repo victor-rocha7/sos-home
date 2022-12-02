@@ -79,3 +79,11 @@ class RatingForm(forms.ModelForm):
     class Meta:
         model = Rating
         fields = ('body', 'rate')
+
+class UpdateRateForm(forms.ModelForm):
+    body = forms.CharField(label='Comentário', required=False, widget=forms.Textarea(attrs={'class': 'form-control'}))
+    rate = forms.ChoiceField(label='Nota', required=True, choices = RATE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = Rating
+        fields = ('body', 'rate')

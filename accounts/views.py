@@ -4,8 +4,8 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
-from django.views.generic import CreateView, UpdateView
-from .forms import ClientSignUpForm, EmployeeSignUpForm, RatingForm
+from django.views.generic import CreateView, UpdateView, DeleteView
+from .forms import ClientSignUpForm, EmployeeSignUpForm, RatingForm, UpdateRateForm
 from .models import User, Client, Employee, Rating
 from datetime import date
 from django.template.loader import get_template
@@ -45,6 +45,16 @@ class EmployeeSignUp(CreateView):
 def DetailProfile(request, user_id):
     user = User.objects.get(id=user_id)
     rating = Rating.objects.all().filter(profile_id=user_id) 
+
+    # calcula a nota media 
+    rates = []
+    for rate in rating:
+        rates.append(rate.rate)
+    if len(rates)>0:
+        avg_rate = sum(rates)/len(rates)
+    else:
+        avg_rate=5
+
     age = date.today().year - user.birth_date.year
     temp_user = user
     if temp_user.is_employee:
@@ -67,11 +77,11 @@ def DetailProfile(request, user_id):
         temp_user.age = age
         temp_user.job = employee.job
         temp_user.available = employee.available
-        context = {'employee': temp_user, 'disp':disp, 'rating':rating}
+        context = {'employee': temp_user, 'disp':disp, 'rating':rating, 'avg_rate':avg_rate}
         return render(request, 'registration/detail_profile.html', context)
     else:
         temp_user.age = age
-        context = {'client': temp_user, 'rating':rating}
+        context = {'client': temp_user, 'rating':rating, 'avg_rate':avg_rate}
         return render(request, 'registration/detail_profile.html', context)
 
 class UserUpdate(UpdateView):
@@ -94,6 +104,17 @@ class UserUpdate(UpdateView):
 
 def Profile(request):
     user = request.user
+    rating = Rating.objects.all().filter(profile_id=user.id) 
+
+    # calcula a nota media 
+    rates = []
+    for rate in rating:
+        rates.append(rate.rate)
+    if len(rates)>0:
+        avg_rate = sum(rates)/len(rates)
+    else:
+        avg_rate=5
+
     age = date.today().year - user.birth_date.year
     temp_user = user
     if user.is_employee:
@@ -116,12 +137,12 @@ def Profile(request):
         temp_user.age = age
         temp_user.job = employee.job
         temp_user.available = employee.available
-        context = {'user': temp_user, 'disp':disp}
+        context = {'user': temp_user, 'disp':disp, 'rating':rating, 'avg_rate':avg_rate}
         return render(request, 'registration/user_profile.html', context)
         
     else:
         temp_user.age = age
-        context = {'user': temp_user}
+        context = {'user': temp_user, 'rating':rating, 'avg_rate':avg_rate}
         return render(request, 'registration/user_profile.html', context)
 
 def Rate(request, user_id):
@@ -142,3 +163,17 @@ def Rate(request, user_id):
     context = {'form':form, 'profile':profile}
 
     return render(request, 'rate.html', context)
+
+class UpdateRate(UpdateView):
+    model = Rating
+    form_class = UpdateRateForm
+    template_name = 'update_rate.html'
+    
+    def get_success_url(self):
+        return reverse_lazy('detail', kwargs={'pk': [user_id]})
+    
+     
+class DeleteRate(DeleteView):
+    model = Rating
+    template_name = 'delete_rate.html'
+    success_url = reverse_lazy('home')

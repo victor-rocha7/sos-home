@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title%} Excluir Avaliação{% endblock %}
+
+{% block content %}
+
+<h3> Excluir Avaliação de: {{ rating.profile.name }}</h3>
+
+<br>
+<form method="POST">
+    {% csrf_token %}
+    <strong>Tem certeza que deseja excluir?</strong><br> 
+    <small>(Esta ação não pode ser desfeita)</small><br><br>
+    <button class="btn btn-danger">Excluir</button><br>
+
+{% endblock %}
+
