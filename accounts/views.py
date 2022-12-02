@@ -108,6 +108,7 @@ class UserUpdate(UpdateView):
     def get_success_url(self):
         return reverse('user-profile')
 
+@login_required
 def Profile(request):
     user = request.user
     rating = Rating.objects.all().filter(profile_id=user.id) 
@@ -151,6 +152,7 @@ def Profile(request):
         context = {'user': temp_user, 'rating':rating, 'avg_rate':avg_rate}
         return render(request, 'registration/user_profile.html', context)
 
+@login_required
 def Rate(request, user_id):
     user = request.user
     profile = User.objects.get(pk=user_id) 
@@ -178,7 +180,6 @@ class UpdateRate(UpdateView):
     def get_success_url(self):
         return reverse('detail', kwargs={'user_id': self.object.profile_id})
 
-     
 class DeleteRate(DeleteView):
     model = Rating
     template_name = 'delete_rate.html'
