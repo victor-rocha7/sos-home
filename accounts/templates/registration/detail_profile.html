@@ -136,10 +136,14 @@
             <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
             <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
             <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
-            {% endif %}<br><br>
+            {% endif %}<br>
+            {% if user.id == rate.author.id %}
+            <br>
             <a href="{% url 'rate-update' employee.id rate.id %}" class="btn btn-primary btn-sm">Editar </a> 
             <a href="{% url 'rate-delete' employee.id rate.id %}" class="btn btn-danger btn-sm">Excluir </a><br>
-            <br><hr>
+            <br>
+            {% endif %}
+            <hr>
             
         {% endfor %}
         
@@ -257,9 +261,13 @@
             <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
             <img src="https://cdn-icons-png.flaticon.com/512/1828/1828614.png" width="15">
             {% endif %}<br><br>
+            {% if user.id == rate.author.id %}
+            <br>
             <a href="{% url 'rate-update' client.id rate.id %}" class="btn btn-primary btn-sm">Editar </a> 
             <a href="{% url 'rate-delete' client.id rate.id %}" class="btn btn-danger btn-sm">Excluir </a><br>
-            <br><hr>
+            <br>
+            {% endif %}
+            <hr>
             {% endfor %}
             <a href="{% url 'rate-profile' client.pk %}" class="btn btn-secondary">Avaliar </a><br><br>
         {% endif %}

@@ -98,9 +98,6 @@ class UserUpdate(UpdateView):
         context['titulo'] = 'Meus dados pessoais'
         context['botao'] = 'Atualizar'
         return context
-    
-    def get_success_url(self):
-        return reverse_lazy('user-profile')
 
 def Profile(request):
     user = request.user
@@ -168,10 +165,11 @@ class UpdateRate(UpdateView):
     model = Rating
     form_class = UpdateRateForm
     template_name = 'update_rate.html'
-    
+    context_object_name = 'profile_list'
+
     def get_success_url(self):
-        return reverse_lazy('detail', kwargs={'pk': [user_id]})
-    
+        return reverse('detail', kwargs={'user_id': self.object.profile_id})
+
      
 class DeleteRate(DeleteView):
     model = Rating
