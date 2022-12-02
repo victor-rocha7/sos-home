@@ -87,3 +87,23 @@ class UpdateRateForm(forms.ModelForm):
     class Meta:
         model = Rating
         fields = ('body', 'rate')
+
+class UpdateProfileForm(forms.ModelForm):
+    name = forms.CharField(label='Nome Completo', required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.CharField(label='Email', required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    cpf = forms.CharField(label='CPF', required=True, widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    birth_date = forms.DateField(label='Data de Nascimento', required=True, widget=forms.SelectDateWidget(years=range(1900, 2100)))
+    adress = forms.CharField(label='Endereço', required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    imageURL = forms.URLField(label='URL da Foto de Perfil', required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = User
+        fields = ('name', 'email', 'cpf', 'birth_date', 'adress', 'imageURL')
+
+class UpdateEmployeeProfileForm(forms.ModelForm):
+    available = forms.CharField(label='Disponibilidade', required=False, widget=forms.CheckboxSelectMultiple(choices=AVAILABLE_CHOICES))
+    job = forms.ModelMultipleChoiceField(label='Profissão/Especialidades', required=True, queryset=Category.objects.all(), widget=forms.CheckboxSelectMultiple)
+
+    class Meta:
+        model = Employee
+        fields = ('available', 'job')

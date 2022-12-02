@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.views.generic import CreateView, UpdateView, DeleteView
-from .forms import ClientSignUpForm, EmployeeSignUpForm, RatingForm, UpdateRateForm
+from .forms import ClientSignUpForm, EmployeeSignUpForm, RatingForm, UpdateRateForm, UpdateEmployeeProfileForm, UpdateProfileForm
 from .models import User, Client, Employee, Rating
 from datetime import date
 from django.template.loader import get_template
@@ -84,20 +84,29 @@ def DetailProfile(request, user_id):
         context = {'client': temp_user, 'rating':rating, 'avg_rate':avg_rate}
         return render(request, 'registration/detail_profile.html', context)
 
+class EmployeeUpdate(UpdateView):
+    model = Employee
+    form_class = UpdateEmployeeProfileForm
+    template_name = 'registration/update_employee.html'
+
+    def get_object(self, queryset=None):
+        user = Employee.objects.filter(pk=self.request.user.id).first()
+        return user
+
+    def get_success_url(self):
+        return reverse('user-profile')
+
 class UserUpdate(UpdateView):
     model = User
+    form_class = UpdateProfileForm
     template_name = 'registration/update_user.html'
-    fields = ['name', 'imageURL', 'adress']
 
     def get_object(self, queryset=None):
         user = User.objects.filter(pk=self.request.user.id).first()
         return user
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['titulo'] = 'Meus dados pessoais'
-        context['botao'] = 'Atualizar'
-        return context
+    
+    def get_success_url(self):
+        return reverse('user-profile')
 
 def Profile(request):
     user = request.user
