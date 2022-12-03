@@ -31,6 +31,7 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'about' %}" style="padding:10px; background-color: #13093b ;color: #c9bd1a; font-size: 25px;">Sobre</a>
           </li>
+          <li class="nav-item">
         </ul>
         <ul class="form-inline my-2 my-lg-0">
           {% if user.is_authenticated %}
@@ -41,9 +42,7 @@
           {% if user.is_authenticated %}
             <ul class="nav-item">
               <a class="nav-link" href="{% url 'user-profile' %}" style="background-color: #13093b ;color: #c9bd1a; font-size: 15px; text-align: center;"><u>Meu Perfil</u></a>
-              {% if user.is_employee %}
-              <a class="nav-link" href="#" style="background-color: #13093b ;color: #c9bd1a; font-size: 15px; text-align: center;"><u>Meus Serviços</u></a>
-              {% endif %}
+              <a class="nav-link" href="{% url 'services' user.id %}" style="background-color: #13093b ;color: #c9bd1a; font-size: 15px; text-align: center;"><u>Meus Serviços</u></a>
               <a class="nav-link" href="{% url 'logout' %}" style="background-color: #13093b ;color: #c9bd1a; font-size: 15px; text-align: center;"><u>SAIR</u></a>
             </ul>
           {% else %}

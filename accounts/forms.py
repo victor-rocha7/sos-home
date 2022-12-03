@@ -31,6 +31,9 @@ class ClientSignUpForm(UserCreationForm):
         user.imageURL = self.cleaned_data.get('imageURL')
         user.save()
 
+        client = Client.objects.create(user=user)
+        client.save()
+
         return user
 
 AVAILABLE_CHOICES = [('Manhã','Manhã'), ('Tarde','Tarde'), ('Noite', 'Noite')]

@@ -44,7 +44,6 @@ class Rating(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     body = models.CharField(max_length=255)
     rate = models.PositiveSmallIntegerField(choices=RATE_CHOICES)
-    likes = models.PositiveSmallIntegerField(default=0)
 
     # pegando o perfil do avaliado (client/employee)
     profile = models.ForeignKey(User, related_name='profile', on_delete=models.CASCADE)

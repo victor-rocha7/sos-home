@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title%} Agendamento {% endblock %}
+
+{% block content %}
+
+<h1>Serviços</h1>
+<hr><br>
+<section>
+    <header>
+    {% if user.is_client %}
+        <h3>Serviços solicitados</h3><br>
+        {% if not services.all %}
+            <small>Ainda não existe nenhum serviço solicitado para este perfil.</small>
+            <br><br>
+            <a href="{% url 'categories'%}" class="btn btn-secondary">Procurar serviços</a><br><br>
+            <br><br>
+        {% else %}
+            {% for services in services.all %}
+                {% if user.id == services.client.id %}
+                    {% if services.job_date %}
+                        <b>Data do serviço:</b> "{{ services.job_date }}"
+                    {% else %}
+                        <b>Data do serviço:</b> <i><small>Ainda não há data.</small></i>
+                        <br>
+                    {% endif %}
+                        <a href="{% url 'schedule-update' employee.id %}" class="btn btn-primary btn-sm">Editar data do serviço </a>
+                        <a href="{% url 'budget-update' employee.id %}" class="btn btn-primary btn-sm">Editar orçamento do serviço </a>
+                        <a href="{% url 'services-delete' employee.id %}" class="btn btn-danger btn-sm">Excluir serviço</a><br>
+                        <br>
+                        <hr>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% elif user.is_employee %}
+        {% for service in rating.all %}
+            <h5><a href="{% url 'detail' rate.author.id %}">{{ rate.author.name }}</a><small>- {{ rate.date }}</small></h5>
+            
+            {% if rate.body %}
+            <b>Comentário:</b> "{{ rate.body }}"
+            {% else %}
+            <b>Comentário:</b> <i><small>Nenhum</small></i>
+            {% endif %}
+            {% if user.id == rate.author.id %}
+            <br>
+            <a href="{% url 'rate-update' employee.id rate.id %}" class="btn btn-primary btn-sm">Editar </a> 
+            <a href="{% url 'rate-delete' employee.id rate.id %}" class="btn btn-danger btn-sm">Excluir </a><br>
+            <br>
+            {% endif %}
+            <hr>
+            
+        {% endfor %}
+
+        <a href="{% url 'rate-profile' employee.pk %}" class="btn btn-secondary">Avaliar </a><br><br>
+    {% else %}
+        <small>Este perfil não é de cliente e nem de prestador.</small>
+    {% endif %}
+</section>
+<hr><br>
+
+{% endblock %}

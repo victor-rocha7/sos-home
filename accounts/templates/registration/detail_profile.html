@@ -78,7 +78,13 @@
             <img src="https://cdn-icons-png.flaticon.com/512/1828/1828970.png" width="15">
             {% endif %} <b>({{avg_rate}}/5)</b></li><br>
         </ul>
-        
+
+        {% if user.is_client %}
+            <div class="media" style="text-align: justify;">
+                <h5><a href="{% url 'schedule' employee.id%}" class="btn btn-secondary">Solicitar serviço</a></h5>
+                <int:user_id>
+            </div>
+        {% endif %}
     </div>
     </div>
 </div>
