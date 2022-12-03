@@ -8,7 +8,9 @@ from django.views.generic import CreateView, UpdateView, DeleteView
 from .forms import ClientSignUpForm, EmployeeSignUpForm, RatingForm, UpdateRateForm, UpdateEmployeeProfileForm, UpdateProfileForm
 from .models import User, Client, Employee, Rating
 from datetime import date
-from django.template.loader import get_template
+from django.core.mail import EmailMessage
+from django.conf import settings
+from django.template.loader import render_to_string, get_template
 
 def signup(request):
     return render(request, 'registration/signup_choice.html')
@@ -25,6 +27,7 @@ class ClientSignUp(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
+        success(self.request, user)
         return redirect('home')
 
 class EmployeeSignUp(CreateView):
@@ -186,3 +189,17 @@ class DeleteRate(DeleteView):
 
     def get_success_url(self):
         return reverse('detail', kwargs={'user_id': self.object.profile_id})
+
+def success(request, user):
+    template = render_to_string('registration/email_confirmation.html', {'name': user.name})
+    email = EmailMessage(
+        'Confirmação de cadastro no SOS Home',
+        template,
+        settings.EMAIL_HOST_USER,
+        [user.email],
+    )
+    email.fail_silently = False
+    email.send()
+    user = User.objects.get(id=user.id)
+    context = {'user': user}
+    return render(request, 'registration/email_confirmation.html', context)
