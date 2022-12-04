@@ -1,3 +1,2 @@
-web: gunicorn moviesite.wsgi
-release: python manage.py makemigrations
+web: gunicorn soshome.wsgi
 release: python manage.py migrate
