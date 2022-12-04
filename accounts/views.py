@@ -50,7 +50,7 @@ class EmployeeSignUp(CreateView):
 @login_required
 def DetailProfile(request, user_id):
     user = User.objects.get(id=user_id)
-    rating = Rating.objects.all().filter(profile_id=user_id) 
+    rating = Rating.objects.all().filter(profile_id=user_id).order_by('-rate')
 
     # calcula a nota media 
     rates = []
@@ -115,9 +115,9 @@ class UserUpdate(UpdateView):
         return reverse('user-profile')
 
 @login_required
-def Profile(request):
+def MyProfile(request):
     user = request.user
-    rating = Rating.objects.all().filter(profile_id=user.id) 
+    rating = Rating.objects.all().filter(profile_id=user.id).order_by('-rate')
 
     # calcula a nota media 
     rates = []

@@ -8,6 +8,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('api/v1/', include('api.urls')),
+    path('services/', include('services.urls')),
 ]
 
 # Direcionamento do erro 404

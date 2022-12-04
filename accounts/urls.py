@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup, ClientSignUp, EmployeeSignUp, DetailProfile, EmployeeUpdate, UserUpdate, Profile, Rate, UpdateRate, DeleteRate
+from .views import signup, ClientSignUp, EmployeeSignUp, DetailProfile, EmployeeUpdate, UserUpdate, MyProfile, Rate, UpdateRate, DeleteRate
 from django.contrib.auth import login
 
 urlpatterns = [
@@ -7,7 +7,7 @@ urlpatterns = [
     path('signup/client', ClientSignUp.as_view(), name='signup-client'),
     path('signup/employee', EmployeeSignUp.as_view(), name='signup-employee'),
     path('profile/<int:user_id>', DetailProfile, name='detail'),
-    path('myprofile/', Profile, name='user-profile'),
+    path('myprofile/', MyProfile, name='user-profile'),
     path('myprofile/employee/update', EmployeeUpdate.as_view(), name='update-employee'),
     path('myprofile/update', UserUpdate.as_view(), name='update-user'),
     path('profile/<int:user_id>/rate', Rate, name='rate-profile'),
