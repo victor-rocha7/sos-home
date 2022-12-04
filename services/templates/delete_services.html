@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% block title%} Excluir Avaliação{% endblock %}
+{% block title%} Excluir Serviço{% endblock %}
 
 {% block content %}
 
 {% if user.is_authenticated %}
-    {% if user.id == rating.author.id %}
-    <h3> Excluir Avaliação</h3>
+{% if user.id == services.client_id or user.id == services.employee_id %}
+    <h3> Excluir Serviço</h3><hr>
 
     <br>
     <form method="POST">

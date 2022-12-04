@@ -108,8 +108,6 @@ Perfil de Usuário
     {% if not rating.all %}
         <small>Ainda não existe nenhuma avaliação para este perfil.</small>
         <br><br>
-        <a href="{% url 'rate-profile' user.pk %}" class="btn btn-secondary">Avaliar </a><br><br>
-        <br><br>
     {% else %}
         {% for rate in rating.all %}
             <h5><a href="{% url 'detail' rate.author.id %}">{{ rate.author.name }}</a><small>- {{ rate.date }}</small></h5> 
@@ -224,8 +222,6 @@ Perfil de Usuário
 
     {% if not rating.all %}
         <small>Ainda não existe nenhuma avaliação para este perfil.</small>
-        <br><br>
-        <a href="{% url 'rate-profile' user.pk %}" class="btn btn-secondary">Avaliar </a><br><br>
         <br><br>
     {% else %}
         {% for rate in rating.all %}
