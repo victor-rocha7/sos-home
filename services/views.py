@@ -28,7 +28,7 @@ class DeleteServices(DeleteView):
     template_name = 'delete_services.html'
 
     def get_success_url(self):
-        return reverse('services', kwargs={'user_id': self.object.employee_id})
+        return reverse('services', kwargs={'user_id': self.object.client_id})
 
 class UpdateSchedule(UpdateView):
     model = Services
@@ -36,7 +36,7 @@ class UpdateSchedule(UpdateView):
     template_name = 'update_schedule.html'
 
     def get_success_url(self):
-        return reverse('services', kwargs={'user_id': self.object.employee_id})
+        return reverse('services', kwargs={'user_id': self.object.client_id})
 
 @login_required
 def Budget(request, employee_id):
@@ -63,4 +63,4 @@ class UpdateBudget(UpdateView):
     template_name = 'update_budget.html'
 
     def get_success_url(self):
-        return reverse('services', kwargs={'user_id': self.object.employee_id})
+        return reverse('services', kwargs={'user_id': self.object.client_id})
