@@ -27,8 +27,8 @@ class UpdateBudgetForm(forms.ModelForm):
         fields = ('description','price',)
 
 class UpdateScheduleForm(forms.ModelForm):
-    job_date = forms.DateField(label='Nova Data do Serviço', widget=forms.SelectDateWidget(years=range(2020, 2024)))
-    job_time = forms.TimeField(label='Nova Horário do Serviço', widget=forms.TimeInput())
+    job_date = forms.DateField(label='Data do Serviço', widget=forms.SelectDateWidget(years=range(2020, 2024)))
+    job_time = forms.TimeField(label='Horário do Serviço', widget=forms.TimeInput())
     
     class Meta:
         model = Services
