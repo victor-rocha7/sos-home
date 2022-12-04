@@ -8,7 +8,11 @@ from django.views.generic import CreateView, UpdateView, DeleteView
 from .forms import ClientSignUpForm, EmployeeSignUpForm, RatingForm, UpdateRateForm, UpdateEmployeeProfileForm, UpdateProfileForm
 from .models import User, Client, Employee, Rating
 from datetime import date
-from django.template.loader import get_template
+from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
 
 def signup(request):
     return render(request, 'registration/signup_choice.html')
@@ -24,6 +28,7 @@ class ClientSignUp(CreateView):
 
     def form_valid(self, form):
         user = form.save()
+        success(self.request, user)
         login(self.request, user)
         return redirect('home')
 
@@ -38,6 +43,7 @@ class EmployeeSignUp(CreateView):
 
     def form_valid(self, form):
         user = form.save()
+        success(self.request, user)
         login(self.request, user)
         return redirect('home')
 
@@ -186,3 +192,22 @@ class DeleteRate(DeleteView):
 
     def get_success_url(self):
         return reverse('detail', kwargs={'user_id': self.object.profile_id})
+
+def success(request, user):
+    html_content = render_to_string('registration/email_confirmation.html', {'user': user})
+    text_content = strip_tags(html_content)
+
+    email = EmailMultiAlternatives(
+        'Confirmação de cadastro no SOS Home', 
+        text_content, 
+        settings.EMAIL_HOST_USER,
+        [user.email]
+        )
+        
+    email.attach_alternative(html_content, 'text/html')
+
+    email.fail_silently = False
+    email.send()
+    user = User.objects.get(id=user.id)
+    context = {'user': user}
+    return render(request, 'registration/email_confirmation.html', context)
